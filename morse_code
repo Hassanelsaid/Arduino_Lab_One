@@ -1,0 +1,101 @@
+String input;  //the user input   
+ 
+void setup() {
+ 
+    pinMode(13,OUTPUT);
+    Serial.begin(9600);
+ 
+}
+ 
+void loop() {
+ 
+ 
+ 
+   while(Serial.available()==0){}
+    input=Serial.readString();
+    char word[input.length()];   //array to store the characters of the input
+    String morse;
+    int i;
+    for(i=0;i<input.length();i++){
+      word[i]=input.charAt(i);
+      if(isWhitespace(word[i])){
+        morse+='w';                        //'w' is used to separate between words
+      }
+      else{
+      morse+=convertToMorse(word[i])+'/';    //create the morse code of the whole input, '/' is used to separate between letters
+      }
+    }
+ 
+ 
+ 
+   char morseChar[morse.length()];    //array to store the characters of morse
+   for(i=0;i<morse.length();i++){
+      morseChar[i]=morse.charAt(i);
+      if(morseChar[i]=='.'){
+        digitalWrite(13,HIGH);
+        delay(300);
+        digitalWrite(13,LOW);
+        delay(300);
+      }
+      else if(morseChar[i]=='-'){
+        digitalWrite(13,HIGH);
+        delay(1000);
+        digitalWrite(13,LOW);
+        delay(300);
+      }
+      else if(morseChar[i]=='/'){
+        digitalWrite(13,LOW);
+        delay(1000);
+      }
+      else if(morseChar[i]=='w'){
+        digitalWrite(13,LOW);
+        delay(2100);
+      }
+   }
+ 
+ 
+ 
+}
+ 
+ 
+ String convertToMorse(char a){      //convert each character to its morse code
+      switch(a){
+        case 'A': return ".-"; break;
+        case 'B': return "-..."; break;
+        case 'C': return "-.-."; break;
+        case 'D': return "-.."; break;
+        case 'E': return"."; break;
+        case 'F': return"..-."; break;
+        case 'G': return"--."; break;
+        case 'H': return"...."; break;
+        case 'I': return".."; break;
+        case 'J': return".---"; break;
+        case 'K': return"-.-"; break;
+        case 'L': return".-.."; break;
+        case 'M': return"--"; break;
+        case 'N': return"-."; break;
+        case 'O': return"---"; break;
+        case 'P': return".--."; break;
+        case 'Q': return"--.-"; break;
+        case 'R': return".-."; break;
+        case 'S': return"..."; break;
+        case 'T': return"-"; break;
+        case 'U': return"..-"; break;
+        case 'V': return"...-"; break;
+        case 'W': return".--"; break;
+        case 'X': return"-..-"; break;
+        case 'Y': return"-.--"; break;
+        case 'Z': return"--.."; break;
+        case '0': return"-----"; break;
+        case '1': return".----"; break;
+        case '2': return"..---"; break;
+        case '3': return"...--"; break;
+        case '4': return"....-"; break;
+        case '5': return"....."; break;
+        case '6': return"-...."; break;
+        case '7': return"--..."; break;
+        case '8': return"---.."; break;
+        case '9': return"----."; break;
+        default: return;break;
+      }
+    }
